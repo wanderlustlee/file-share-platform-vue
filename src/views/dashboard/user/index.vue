@@ -1,7 +1,7 @@
 <template>
   <div class="user animateClass">
-    <p class="user_p0">Ordinary Users</p>
-    <p class="user_p1">users's Dashboard</p>
+    <p class="user_p0">欢迎使用</p>
+    <p class="user_p1">文件共享平台</p>
     <div class="user_img" ref="aniEnd">
       <img src="https://cn.vuejs.org/images/logo.png" alt="vue" />
     </div>

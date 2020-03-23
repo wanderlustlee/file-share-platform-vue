@@ -19,6 +19,8 @@
 </template>
 
 <script>
+  import API from '@/api'
+  import store from '@/store'
 export default {
   data() {
     return {
@@ -32,12 +34,15 @@ export default {
         this.$message.error('图片大小不能超过5MB!')
         return false
       }
+      let config = {
+        headers: {
+          'Authorization': store.getters.token
+        }
+      }
       let formData = new FormData();
-      formData.append('token', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyIn0.oHDiid0d18zZu97HIJOrsnNVPIsSzfbuVIX8imy0Y80')
       formData.append('file',file.raw);
-      this.$http.post('http://localhost:8888/file/upload', formData)
-        .then(response=>{
-          console.log(response.data);
+      this.$http.post('http://localhost:8888/file/upload', formData, config)
+        .then(() => {
           this.$message.success('上传成功！')
         })
     },

@@ -2,7 +2,7 @@
   <div class="header">
     <div class="header_l">
       <a href="javascript:;" class="logoLink"
-        ><img src="./logo.png" alt="logo" />Vue Project</a
+        ><img src="./logo.png" alt="logo" />文件共享平台</a
       >
     </div>
     <div class="header_r">

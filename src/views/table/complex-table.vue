@@ -9,41 +9,41 @@
           type="text"
           placeholder="请输入文件名"
           class="width1"
-          v-model="sch_order"
+          v-model="searchFileName"
         ></el-input>
 
         <el-date-picker
           class="width1"
-          v-model="sch_date"
+          v-model="searchDate"
           type="date"
           placeholder="选择日期时间"
           value-format="yyyy-MM-dd"
         ></el-date-picker>
 
-        <el-button type="primary" icon="el-icon-search" @click="searchTab()"
+        <el-button type="primary" icon="el-icon-search" @click="search()"
           >搜索</el-button
         >
       </div>
       <el-table :data="tableData" border stripe>
-        <el-table-column prop="id" label="序号" width="60"></el-table-column>
+        <el-table-column type="index" label="序号" align="center" width="65" :index="indexMethod"></el-table-column>
         <el-table-column prop="fileName" label="文件名"></el-table-column>
-        <el-table-column prop="userId" label="上传人"></el-table-column>
+        <el-table-column prop="userName" label="上传人"></el-table-column>
         <el-table-column prop="createTime" label="上传时间"></el-table-column>
         <el-table-column label="操作" width="300">
           <template slot-scope="scope">
             <el-button
               type="primary"
-              @click="download(scope.fileName)"
+              @click="download(scope.row.fileName)"
               >下载</el-button
             >
             <el-button
               type="warning"
-              @click="preview(scope.fileName)"
+              @click="preview(scope.row.fileName)"
               >预览</el-button
             >
             <el-button
               type="danger"
-              @click="toDelete(scope.fileName)"
+              @click="toDelete(scope.row.fileName)"
               :disabled="scope.row.status !== 3 ? false : true"
               >取消</el-button
             >
@@ -67,19 +67,17 @@
 </template>
 
 <script>
-import { getPageTab2 } from '@/api/table'
 import API from '@/api'
 export default {
   data() {
     return {
       tableData: [],
       allList: [],
-      schArr: [],
-      sch_order: '',
-      sch_status: null,
-      sch_date: null,
+      searchFileName: '',
+      searchDate: '',
       currentPage: 1,
       pageSize: 10,
+      pageIndex: 1,
       total: 0,
       pageSizes: [10, 20, 30, 40],
       diaIsShow: false,
@@ -133,15 +131,35 @@ export default {
       }
     },
     async download(fileName) {
-      let response = await API.file.getDownloadUrl({ fileName: fileName })
+      let response = await API.file.getDownloadUrl({ fileName: fileName });
       if (response.status === 200) {
         let downloadUrl = process.env.VUE_APP_BASE_API + response.data
         window.open(downloadUrl)
       }
 
     },
-    async preview() {
+    preview(fileName) {
+      let kkPreviewUrl = 'http://127.0.0.1:8012/onlinePreview?url='
+      let previewUrl = 'http://10.12.65.127:8888/file/preview/' + fileName
+      window.open(kkPreviewUrl + encodeURIComponent(previewUrl));
 
+    },
+    async search() {
+      if (this.searchFileName) {
+        let response = await API.file.queryByFileName({ fileName: this.searchFileName });
+        if (response.status === 200) {
+          this.tableData = response.data;
+        }
+      } else {
+        let response = await API.file.getFileList()
+        if (response.status === 200) {
+          this.tableData = response.data
+        }
+      }
+    },
+    // 自增序列号
+    indexMethod (val) {
+      return val + 1 + (this.pageSize * (this.pageIndex - 1))
     },
     handleSize(val) {
       this.pageSize = val
@@ -157,31 +175,7 @@ export default {
       this.tableData = this.schArr.slice(start, end)
     },
     // 查找
-    searchTab() {
-      let arrList = []
-      for (let item of this.allList) {
-        if (
-          this.sch_order.trim() === '' &&
-          this.sch_status === null &&
-          this.sch_date === null
-        ) {
-          arrList = this.allList
-          break
-        } else if (
-          item.order.startsWith(this.sch_order) &&
-          (this.sch_status !== null ? item.status === this.sch_status : true) &&
-          (this.sch_date !== null ? item.time.startsWith(this.sch_date) : true)
-        ) {
-          let obj = Object.assign({}, item)
-          arrList.push(obj)
-        }
-      }
-      this.schArr = arrList
-      this.total = arrList.length
-      this.currentPage = 1
-      this.pageSize = 10
-      this.getPageData()
-    },
+
     // 取消
     toDelete(row) {
       row.status = 3

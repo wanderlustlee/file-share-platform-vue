@@ -66,74 +66,26 @@ export const currencyRoutes = [
 /*动态添加routers*/
 export const asyncRoutes = [
   {
-    path: '/permission',
-    name: 'Permission',
-    component: Layout,
-    redirect: '/permission/page-use',
-    meta: {
-      title: '权限许可',
-      icon: 'el-icon-lock'
-    },
-    children: [
-      {
-        path: 'page-user',
-        name: 'PageUser',
-        component: () => import('@/views/permission/page-user'),
-        meta: { title: '用户页面', icon: 'el-icon-user' }
-      },
-      {
-        path: 'page-admin',
-        name: 'PageAdmin',
-        component: () => import('@/views/permission/page-admin'),
-        meta: {
-          title: '管理员页面',
-          icon: 'el-icon-user-solid'
-        }
-      },
-      {
-        path: 'roles',
-        name: 'Roles',
-        component: () => import('@/views/permission/roles'),
-        meta: { title: '权限设置', icon: 'el-icon-s-tools' }
-      }
-    ]
-  },
-  {
     path: '/table',
     name: 'Table',
     redirect: '/table/base-table',
     component: Layout,
     meta: {
-      title: 'Table',
+      title: '文件',
       icon: 'el-icon-table iconfont'
     },
     children: [
       {
-        path: 'base-table',
-        name: 'BaseTable',
-        component: () => import('@/views/table/common-table'),
-        meta: { title: '普通表格' }
-      },
-      {
         path: 'complex-table',
         name: 'ComplexTable',
         component: () => import('@/views/table/complex-table'),
-        meta: { title: '复杂表格' }
-      }
-    ]
-  },
-  {
-    path: '/components',
-    component: Layout,
-    name: 'Components',
-    redirect: '/components/slide-yz',
-    meta: { icon: 'el-icon-coin', title: '部分组件' },
-    children: [
+        meta: { title: '查看文件' }
+      },
       {
-        path: 'upload',
-        name: 'Upload',
-        component: () => import('@/views/components/pushImg'),
-        meta: { icon: 'el-icon-upload', title: '上传图片' }
+        path: 'excel-in',
+        name: 'Excel-in',
+        component: () => import('@/views/excel-operate/excel-in'),
+        meta: { title: '上传文件' }
       }
     ]
   },
@@ -172,37 +124,12 @@ export const asyncRoutes = [
     meta: { icon: 'el-icon-excel iconfont', title: 'Excel' },
     children: [
       {
-        path: 'excel-out',
-        name: 'Excel-out',
-        component: () => import('@/views/excel-operate/excel-out'),
-        meta: { title: 'Excel导出' }
-      },
-      {
         path: 'excel-in',
         name: 'Excel-in',
         component: () => import('@/views/excel-operate/excel-in'),
         meta: { title: 'Excel导入' }
       }
     ]
-  },
-  {
-    path: '/error',
-    component: Layout,
-    name: 'Error',
-    redirect: '/error/404',
-    children: [
-      {
-        path: '404',
-        name: 'Page404',
-        component: () => import('@/views/error-page/404'),
-        meta: { title: '404', icon: 'el-icon-s-release' }
-      }
-    ]
-  },
-  {
-    path: 'https://github.com/gcddblue/vue-admin-webapp',
-    name: 'Github',
-    meta: { icon: 'el-icon-link', title: '项目链接' }
   },
   {
     path: '*',

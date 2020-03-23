@@ -23,29 +23,10 @@
     <el-tabs>
       <el-tab-pane label="Timeline">
         <!-- <el-button type="primary" slot="label">Timeline</el-button> -->
-        <el-timeline>
-          <el-timeline-item timestamp="2019/4/12" placement="top">
+        <el-timeline :data="userLoadHistory">
+          <el-timeline-item v-for="(load, index) in userLoadHistory" :key="index" :timestamp="load.createTime" placement="top">
             <el-card>
-              <h4>更新 Github 模板</h4>
-              <p>提交于 2019/4/12 20:46</p>
-            </el-card>
-          </el-timeline-item>
-          <el-timeline-item timestamp="2019/4/3" placement="top">
-            <el-card>
-              <h4>更新 Github 模板</h4>
-              <p>提交于 2018/4/3 20:46</p>
-            </el-card>
-          </el-timeline-item>
-          <el-timeline-item timestamp="2019/4/2" placement="top">
-            <el-card>
-              <h4>更新 Github 模板</h4>
-              <p>提交于 2019/4/2 20:46</p>
-            </el-card>
-          </el-timeline-item>
-          <el-timeline-item timestamp="2019/4/1" placement="top">
-            <el-card>
-              <h4>更新 Github 模板</h4>
-              <p>提交于 2019/4/1 20:46</p>
+              <h4> {{load.operateType == 'upload' ? '上传' : '下载'}}了 {{load.fileName}}</h4>
             </el-card>
           </el-timeline-item>
         </el-timeline>
@@ -60,9 +41,27 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import API from '@/api'
+
 export default {
+  data() {
+    return {
+      userLoadHistory: [],
+    }
+  },
   computed: {
     ...mapGetters(['userName', 'introduce'])
+  },
+  mounted() {
+    this.getUserLoadData()
+  },
+  methods: {
+    async getUserLoadData() {
+      let response = await API.user.getUserLoad()
+      if (response.status === 200) {
+        this.userLoadHistory = response.data
+      }
+    }
   }
 }
 </script>
