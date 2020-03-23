@@ -4,5 +4,16 @@ export default {
   getUserLoad(params) {
     const url = '/user/load-history'
     return $axios.get(url, params)
+  },
+
+  register(params) {
+    const url = '/user/register'
+    return $axios.post(url, params)
+  },
+
+  validateUserName(params) {
+    const url = '/user/validate'
+    return $axios.get(url, params)
   }
+
 }

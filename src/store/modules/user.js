@@ -36,14 +36,12 @@ const actions = {
     return new Promise((resolve, reject) => {
       login(formdatas)
         .then(res => {
-          if (res.code === 0) {
-            if (res.data.success) {
-              Message.success(res.data.msg)
-              commit('SET_TOKEN', res.data.token)
-            } else {
-              Message.error(res.data.msg)
-            }
+          if (res.status === 200) {
+            Message.success(res.msg)
+            commit('SET_TOKEN', res.data)
             resolve(res)
+          } else {
+            Message.error(res.msg)
           }
         })
         .catch(error => {

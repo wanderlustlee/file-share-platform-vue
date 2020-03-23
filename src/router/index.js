@@ -28,6 +28,13 @@ export const currencyRoutes = [
     hidden: true
   },
   {
+    path: '/register',
+    name: 'Register',
+    component: () => import('@/views/register'),
+    meta: { title: '注册页' },
+    hidden: true
+  },
+  {
     path: '/404',
     name: '404',
     component: () => import('@/views/error-page/404.vue'),
@@ -182,12 +189,18 @@ router.beforeEach(async (to, from, next) => {
         }
       }
     } else {
-      next({
-        path: '/login',
-        query: {
-          redirect: to.fullPath
-        }
-      })
+      if (to.path === '/register') {
+        console.log("走到这了")
+        next()
+      }else {
+        next({
+          path: '/login',
+          query: {
+            redirect: to.fullPath
+          }
+        })
+      }
+
     }
   }
 })

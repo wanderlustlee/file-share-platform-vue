@@ -95,9 +95,6 @@ export default {
     })
   },
   get(url, data) {
-    // eslint-disable-next-line no-console
-    console.log('!!!!!!!!!!!!')
-    console.log('data',data)
     return $axios({
       method: 'get',
       url,
