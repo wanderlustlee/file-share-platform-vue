@@ -75,7 +75,7 @@ export const asyncRoutes = [
   {
     path: '/table',
     name: 'Table',
-    redirect: '/table/base-table',
+    redirect: '/table/complex-table',
     component: Layout,
     meta: {
       title: '文件',
@@ -85,13 +85,13 @@ export const asyncRoutes = [
       {
         path: 'complex-table',
         name: 'ComplexTable',
-        component: () => import('@/views/table/complex-table'),
+        component: () => import('@/views/file/file-view'),
         meta: { title: '查看文件' }
       },
       {
         path: 'excel-in',
         name: 'Excel-in',
-        component: () => import('@/views/excel-operate/excel-in'),
+        component: () => import('@/views/file/file-upload'),
         meta: { title: '上传文件' }
       }
     ]
@@ -120,21 +120,6 @@ export const asyncRoutes = [
         name: 'Map-chart',
         component: () => import('@/views/echarts/map-chart'),
         meta: { title: 'map' }
-      }
-    ]
-  },
-  {
-    path: '/excel',
-    component: Layout,
-    name: 'Excel',
-    redirect: '/excel-operate/excel-out',
-    meta: { icon: 'el-icon-excel iconfont', title: 'Excel' },
-    children: [
-      {
-        path: 'excel-in',
-        name: 'Excel-in',
-        component: () => import('@/views/excel-operate/excel-in'),
-        meta: { title: 'Excel导入' }
       }
     ]
   },
@@ -174,6 +159,7 @@ router.beforeEach(async (to, from, next) => {
         next()
       } else {
         try {
+          // 根据请求getInfo的结果赋予用户对应的router
           const { roles } = await store.dispatch('user/_getInfo')
           const addRoutes = await store.dispatch(
             'permission/getAsyncRoutes',
@@ -189,8 +175,8 @@ router.beforeEach(async (to, from, next) => {
         }
       }
     } else {
+      // 如果是跳转注册，则不拦截到登录页
       if (to.path === '/register') {
-        console.log("走到这了")
         next()
       }else {
         next({

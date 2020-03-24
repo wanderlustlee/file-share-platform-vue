@@ -68,8 +68,8 @@ export default {
       text: '向右滑动',
       showSlide: false,
       ruleForm: {
-        userName: 'admin',
-        password: '123'
+        userName: '',
+        password: ''
       },
       rules: {
         userName: [
@@ -122,7 +122,6 @@ export default {
         })
     },
     register() {
-      console.log("Register")
       this.$router.push({ path: "/register" });
     }
   },

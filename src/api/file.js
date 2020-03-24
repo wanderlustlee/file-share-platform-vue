@@ -13,9 +13,9 @@ export default {
     const url = '/file/preview'
     return $axios.get(url, data)
   },
-  getFileList() {
+  getFileList(data) {
     const url = '/file/list'
-    return $axios.get(url)
+    return $axios.get(url, data)
   },
   queryByFileName(data) {
     const url = '/file/query'

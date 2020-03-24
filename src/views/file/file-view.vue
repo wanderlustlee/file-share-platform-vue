@@ -2,7 +2,7 @@
   <div class="className">
     <el-card class="anoCard">
       <div slot="header">
-        <span>复杂操作表格</span>
+        <span>查看文件</span>
       </div>
       <div class="searchDiv">
         <el-input
@@ -20,9 +20,7 @@
           value-format="yyyy-MM-dd"
         ></el-date-picker>
 
-        <el-button type="primary" icon="el-icon-search" @click="search()"
-          >搜索</el-button
-        >
+        <el-button type="primary" icon="el-icon-search" @click="search()">搜索</el-button>
       </div>
       <el-table :data="tableData" border stripe>
         <el-table-column type="index" label="序号" align="center" width="65" :index="indexMethod"></el-table-column>
@@ -55,7 +53,7 @@
         layout="total, sizes, prev, pager, next"
         :page-sizes="pageSizes"
         :page-size="pageSize"
-        :current-page="currentPage"
+        :current-page="pageIndex"
         :total="total"
         class="fyDiv"
         @size-change="handleSize"
@@ -75,7 +73,6 @@ export default {
       allList: [],
       searchFileName: '',
       searchDate: '',
-      currentPage: 1,
       pageSize: 10,
       pageIndex: 1,
       total: 0,
@@ -83,51 +80,24 @@ export default {
       diaIsShow: false,
       formData: {},
       editType: '',
-      options: [
-        { label: '待审核', value: 1 },
-        { label: '配送中', value: 2 },
-        { label: '已完成', value: 0 },
-        { label: '已取消', value: 3 }
-      ],
       rowIndex: 0,
     }
   },
   created() {
-  },
-  filters: {
-    statusText(val) {
-      if (val === undefined) return
-      if (val === 0) {
-        return '已完成'
-      } else if (val === 1) {
-        return '待审核'
-      } else if (val === 2) {
-        return '配送中'
-      } else {
-        return '已取消'
-      }
-    },
-    tagClass(val) {
-      if (val === undefined) return
-      if (val === 0) {
-        return 'success'
-      } else if (val === 1) {
-        return 'info'
-      } else if (val === 2) {
-        return 'warning'
-      } else {
-        return 'danger'
-      }
-    }
   },
   mounted() {
     this.getFileData()
   },
   methods: {
     async getFileData() {
-      let response = await API.file.getFileList()
+      let params = {
+        pageIndex: this.pageIndex,
+        pageSize: this.pageSize
+      }
+      let response = await API.file.getFileList(params)
       if (response.status === 200) {
-        this.tableData = response.data
+        this.tableData = response.data.fileVoList
+        this.total = response.data.count
       }
     },
     async download(fileName) {
@@ -163,18 +133,12 @@ export default {
     },
     handleSize(val) {
       this.pageSize = val
-      this.getPageData()
+      this.getFileData()
     },
     handlePage(val) {
-      this.currentPage = val
-      this.getPageData()
+      this.pageIndex = val
+      this.getFileData()
     },
-    getPageData() {
-      let start = (this.currentPage - 1) * this.pageSize
-      let end = start + this.pageSize
-      this.tableData = this.schArr.slice(start, end)
-    },
-    // 查找
 
     // 取消
     toDelete(row) {
@@ -236,7 +200,7 @@ export default {
   }
 }
 .width1 {
-  width: 180px;
+  width: 300px;
   margin-right: 10px;
 }
 .diaForm {

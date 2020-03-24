@@ -39,6 +39,7 @@ const actions = {
           if (res.status === 200) {
             Message.success(res.msg)
             commit('SET_TOKEN', res.data)
+            commit('SET_NAME', formdatas.userName)
             resolve(res)
           } else {
             Message.error(res.msg)
@@ -66,7 +67,6 @@ const actions = {
           if (res.code === 0) {
             const { name, roles, introduce } = res.data
             commit('SET_ROLES', roles)
-            commit('SET_NAME', name)
             commit('SET_INTRODUCE', introduce)
           } else {
             Message.error(res.msg)
