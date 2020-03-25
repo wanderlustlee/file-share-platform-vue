@@ -7,6 +7,7 @@ import { Loading, Message } from 'element-ui' // 引用element-ui的加载和消
 import login from './login.js'
 import file from './file.js'
 import user from './user.js'
+import question from './question'
 
 const $axios = axios.create({
   // 设置超时时间
@@ -103,6 +104,7 @@ export default {
   },
   login,
   file,
-  user
+  user,
+  question
 
 }

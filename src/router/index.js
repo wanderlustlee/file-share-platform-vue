@@ -97,6 +97,27 @@ export const asyncRoutes = [
     ]
   },
   {
+    path: '/excel',
+    component: Layout,
+    name: 'Excel',
+    redirect: '/excel-operate/excel-out',
+    meta: { icon: 'el-icon-excel iconfont', title: '试题' },
+    children: [
+      {
+        path: 'excel-out',
+        name: 'Excel-out',
+        component: () => import('@/views/question/choice-question-view'),
+        meta: { title: '单选题' }
+      },
+      {
+        path: 'mutiheader-out',
+        name: 'Mutiheader-out',
+        component: () => import('@/views/question/short-answer-question-view'),
+        meta: { title: '简答题' }
+      }
+    ]
+  },
+  {
     path: '/echarts',
     component: Layout,
     name: 'Echarts',

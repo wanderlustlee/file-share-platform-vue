@@ -26,7 +26,7 @@
         <el-table-column type="index" label="序号" align="center" width="65" :index="indexMethod"></el-table-column>
         <el-table-column prop="fileName" label="文件名"></el-table-column>
         <el-table-column prop="userName" label="上传人"></el-table-column>
-        <el-table-column prop="createTime" label="上传时间"></el-table-column>
+        <el-table-column prop="createTime" label="上传时间" width="100"></el-table-column>
         <el-table-column label="操作" width="300">
           <template slot-scope="scope">
             <el-button
@@ -121,10 +121,7 @@ export default {
           this.tableData = response.data;
         }
       } else {
-        let response = await API.file.getFileList()
-        if (response.status === 200) {
-          this.tableData = response.data
-        }
+        this.getFileData()
       }
     },
     // 自增序列号
