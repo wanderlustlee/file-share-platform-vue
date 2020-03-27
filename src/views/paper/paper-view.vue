@@ -2,14 +2,14 @@
   <div class="className">
     <el-card class="anoCard">
       <div slot="header">
-        <span>查看文件</span>
+        <span>查看试卷</span>
       </div>
       <div class="searchDiv">
         <el-input
           type="text"
-          placeholder="请输入文件名"
+          placeholder="请输入用户名"
           class="width1"
-          v-model="searchFileName"
+          v-model="searchUsername"
         ></el-input>
 
         <el-date-picker
@@ -20,33 +20,25 @@
           value-format="yyyy-MM-dd"
         ></el-date-picker>
 
-        <el-button type="primary" icon="el-icon-search" @click="search()">搜索</el-button>
+        <el-button type="primary" icon="el-icon-search" @click="search">搜索</el-button>
       </div>
       <el-table :data="tableData" border stripe>
         <el-table-column type="index" label="序号" align="center" width="65" :index="indexMethod"></el-table-column>
-        <el-table-column prop="fileName" label="文件名"></el-table-column>
-        <el-table-column prop="userName" label="上传人"></el-table-column>
-        <el-table-column prop="createTime" label="上传时间" width="200"></el-table-column>
+        <el-table-column prop="paperName" label="试卷名称"></el-table-column>
+        <el-table-column prop="userName" label="出题人"></el-table-column>
+        <el-table-column prop="createTime" label="生成时间" width="200"></el-table-column>
         <el-table-column label="操作" width="300">
           <template slot-scope="scope">
             <el-button
-              type="primary"
-              icon="el-icon-download"
-              @click="download(scope.row.fileName)"
-              >下载</el-button
-            >
+                type="primary"
+                icon="el-icon-download"
+                @click="download(scope.row.paperName)"
+            >下载</el-button>
             <el-button
-              type="warning"
-              icon="el-icon-s-order"
-              @click="preview(scope.row.fileName)"
-              >预览</el-button
-            >
-            <el-button
-              type="danger"
-              @click="toDelete(scope.row.fileName)"
-              :disabled="scope.row.status !== 3 ? false : true"
-              >取消</el-button
-            >
+                type="warning"
+                icon="el-icon-s-order"
+                @click="preview(scope.row.paperName)"
+            >预览</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -63,6 +55,7 @@
       >
       </el-pagination>
     </el-card>
+
   </div>
 </template>
 
@@ -73,62 +66,63 @@ export default {
     return {
       tableData: [],
       allList: [],
-      searchFileName: '',
+      searchUsername: '',
       searchDate: '',
       pageSize: 10,
       pageIndex: 1,
       total: 0,
       pageSizes: [10, 20, 30, 40],
-      diaIsShow: false,
-      formData: {},
-      editType: '',
       rowIndex: 0,
     }
   },
   created() {
   },
   mounted() {
-    this.getFileData()
+    this.getAllPaperQuestion()
   },
   methods: {
-    async getFileData() {
+    async getAllPaperQuestion() {
       let params = {
         pageIndex: this.pageIndex,
         pageSize: this.pageSize
       }
-      let response = await API.file.getFileList(params)
+      let response = await API.paper.getPaperQuestionList(params)
       if (response.status === 200) {
-        this.tableData = response.data.fileVoList
+        this.tableData = response.data.paperVoList
         this.total = response.data.count
       }
     },
+
+    async search() {
+      if (this.searchDescription) {
+        let response = await API.question.queryChoiceQuestionByDescription({ description: this.searchDescription });
+        if (response.status === 200) {
+          this.tableData = response.data.choiceQuestionVoList
+          this.total = response.data.count
+        }
+      } else {
+        this.getAllChoiceQuestionData()
+      }
+    },
+
     async download(fileName) {
       let params = {
         fileName: fileName,
-        type: 'file'
+        type: 'paper'
       }
       let response = await API.file.getDownloadUrl(params);
       if (response.status === 200) {
-        let downloadUrl = process.env.VUE_APP_BASE_API + response.data + '?type=file'
+        let downloadUrl = process.env.VUE_APP_BASE_API + response.data + '?type=paper'
         window.open(downloadUrl)
       }
 
     },
+    // 需要用公网ip，实时修改
     preview(fileName) {
       let kkPreviewUrl = 'http://127.0.0.1:8012/onlinePreview?url='
-      let previewUrl = 'http://10.12.65.93:8888/file/preview/' + fileName + '?type=file'
+      let previewUrl = 'http://10.12.65.93:8888/file/preview/' + fileName + '?type=paper'
       window.open(kkPreviewUrl + encodeURIComponent(previewUrl));
 
-    },
-    async search() {
-      if (this.searchFileName) {
-        let response = await API.file.queryByFileName({ fileName: this.searchFileName });
-        if (response.status === 200) {
-          this.tableData = response.data;
-        }
-      } else {
-        this.getFileData()
-      }
     },
     // 自增序列号
     indexMethod (val) {
@@ -136,52 +130,11 @@ export default {
     },
     handleSize(val) {
       this.pageSize = val
-      this.getFileData()
+      this.getAllPaperQuestion()
     },
     handlePage(val) {
       this.pageIndex = val
-      this.getFileData()
-    },
-
-    // 取消
-    toDelete(row) {
-      row.status = 3
-      this.$notify({
-        title: '成功',
-        message: '已取消该订单',
-        type: 'success'
-      })
-    },
-    changeTab(form, type) {
-      this.$refs[form].validate(valid => {
-        if (valid) {
-          if (type === 'update') {
-            // 改变整个表格数据
-            let start = (this.currentPage - 1) * this.pageSize
-            this.allList[start + this.rowIndex] = Object.assign(
-              {},
-              this.formData
-            )
-            // 解决数组不能通过索引响应数据变化
-            this.$set(
-              this.tableData,
-              this.rowIndex,
-              Object.assign({}, this.formData)
-            )
-            this.$notify({
-              title: '成功',
-              message: '订单已修改成功',
-              type: 'success'
-            })
-          } else {
-            this.tableData.unshift(Object.assign({}, this.formData))
-            this.allList.push(Object.assign({}, this.formData))
-          }
-          this.diaIsShow = false
-        } else {
-          return
-        }
-      })
+      this.getAllPaperQuestion()
     }
   }
 }

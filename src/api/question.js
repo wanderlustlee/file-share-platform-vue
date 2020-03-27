@@ -33,6 +33,10 @@ export default {
   queryShortAnswerQuestionByDescription(data) {
     const url = '/question/short-answer/query'
     return $axios.get(url, data)
+  },
+  generate(data) {
+    const url = '/question/generate-paper'
+    return $axios.get(url, data)
   }
 
 }

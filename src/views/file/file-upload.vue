@@ -7,14 +7,18 @@
       <el-upload
           class="upload-demo"
           drag
-          action="https://jsonplaceholder.typicode.com/posts/"
+          action="http://localhost:8888/file/upload"
+          :headers="headers"
           :on-change="upload"
-          multiple>
+          :on-success="uploadSuccess"
+          >
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         <div class="el-upload__tip" slot="tip">不可超过10M</div>
       </el-upload>
     </el-card>
+
+
   </div>
 </template>
 
@@ -24,27 +28,38 @@
 export default {
   data() {
     return {
+      formData: {},
+      headers: {
+        'Authorization': store.getters.token
+      }
     }
   },
   methods: {
     // 上传同名文件会覆盖
     upload(file) {
       let size = file.size / 1024 / 1024
-      if (size > 5) {
-        this.$message.error('图片大小不能超过5MB!')
+      if (size > 10) {
+        this.$message.error('图片大小不能超过10MB!')
         return false
       }
+      this.formData = new FormData();
+      this.formData.append('file',file.raw);
+    },
+    uploadFile() {
       let config = {
         headers: {
           'Authorization': store.getters.token
         }
       }
-      let formData = new FormData();
-      formData.append('file',file.raw);
-      this.$http.post('http://localhost:8888/file/upload', formData, config)
+      this.$http.post('http://localhost:8888/file/upload', this.formData, config)
         .then(() => {
+          this.formData = {}
+          this.$message.success('上传成功！')
         })
     },
+    uploadSuccess() {
+      this.$message.success('上传成功！')
+    }
   },
 }
 </script>

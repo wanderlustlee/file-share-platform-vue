@@ -8,6 +8,7 @@ import login from './login.js'
 import file from './file.js'
 import user from './user.js'
 import question from './question'
+import paper from './paper'
 
 const $axios = axios.create({
   // 设置超时时间
@@ -105,6 +106,7 @@ export default {
   login,
   file,
   user,
-  question
+  question,
+  paper
 
 }

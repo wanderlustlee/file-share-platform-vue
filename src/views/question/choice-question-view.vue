@@ -20,9 +20,9 @@
           value-format="yyyy-MM-dd"
         ></el-date-picker>
 
-        <el-button type="primary" icon="el-icon-search" @click="search()">搜索</el-button>
-        <el-button type="primary" icon="el-icon-circle-plus-outline" @click="addTab">添加</el-button
-        >
+        <el-button type="primary" icon="el-icon-search" @click="search">搜索</el-button>
+        <el-button type="primary" icon="el-icon-circle-plus-outline" @click="addTab">添加</el-button>
+        <el-button type="success" icon="el-icon-edit-outline" @click="openGenerate" style="float:right">生成试题</el-button>
       </div>
       <el-table :data="tableData" border stripe>
         <el-table-column type="index" label="序号" align="center" width="65" :index="indexMethod"></el-table-column>
@@ -34,8 +34,8 @@
         <el-table-column prop="optionD" label="选项D"></el-table-column>
         <el-table-column prop="answer" label="答案"></el-table-column>
         <el-table-column prop="point" label="分值"></el-table-column>
-        <el-table-column prop="createTime" label="上传时间" width="100"></el-table-column>
-        <el-table-column label="操作" width="300">
+        <el-table-column prop="createTime" label="上传时间" width="200"></el-table-column>
+        <el-table-column label="操作" width="130">
           <template slot-scope="scope">
             <el-button
               type="primary"
@@ -122,6 +122,34 @@
       </el-form>
     </el-dialog>
 
+    <el-dialog title="试题生成" :visible="generateIsShow" class="diaForm">
+      <el-form
+          ref="generateDiaForm"
+          :model="generateQuestionData"
+          label-width="140px"
+      >
+        <el-form-item label="单选题数量">
+          <el-input
+              type="text"
+              placeholder="请输入生成试题中单选题的数量"
+              v-model="generateQuestionData.choiceQuestionNumber"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="简答题数量">
+          <el-input
+              type="text"
+              placeholder="请输入生成试题中简答题的数量"
+              v-model="generateQuestionData.shortAnswerQuestionNumber"
+          ></el-input>
+        </el-form-item>
+
+        <el-form-item>
+          <el-button type="primary" @click="generate">确认</el-button>
+          <el-button @click="generateIsShow = false">取消</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -148,7 +176,9 @@ export default {
         { label: 'C', value: 'C' },
         { label: 'D', value: 'D' }
       ],
-      dialogTitle: ''
+      dialogTitle: '',
+      generateIsShow: false,
+      generateQuestionData: {}
     }
   },
   created() {
@@ -164,7 +194,7 @@ export default {
       }
       let response = await API.question.getChoiceQuestionList(params)
       if (response.status === 200) {
-        this.tableData = response.data
+        this.tableData = response.data.choiceQuestionVoList
         this.total = response.data.count
       }
     },
@@ -173,7 +203,8 @@ export default {
       if (this.searchDescription) {
         let response = await API.question.queryChoiceQuestionByDescription({ description: this.searchDescription });
         if (response.status === 200) {
-          this.tableData = response.data;
+          this.tableData = response.data.choiceQuestionVoList
+          this.total = response.data.count
         }
       } else {
         this.getAllChoiceQuestionData()
@@ -219,6 +250,20 @@ export default {
         this.$message.error(response.msg)
       }
     },
+
+    async generate() {
+      let params = {
+        choiceQuestionNumber: this.generateQuestionData.choiceQuestionNumber,
+        shortAnswerQuestionNumber: this.generateQuestionData.shortAnswerQuestionNumber
+      }
+      let response = await API.question.generate(params);
+      if (response.status === 200) {
+        this.generateIsShow = false
+        this.$message.success("试题及答案生成成功，请前往试题列表页查看")
+      } else {
+        this.$message.error(response.msg)
+      }
+    },
     // 自增序列号
     indexMethod (val) {
       return val + 1 + (this.pageSize * (this.pageIndex - 1))
@@ -247,6 +292,13 @@ export default {
       this.diaIsShow = true
       this.$nextTick(() => {
         this.$refs.diaForm.clearValidate()
+      })
+    },
+    openGenerate() {
+      this.generateQuestionData = {}
+      this.generateIsShow = true
+      this.$nextTick(() => {
+        this.$refs.generateDiaForm.clearValidate()
       })
     }
   }

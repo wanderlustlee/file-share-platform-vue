@@ -118,6 +118,27 @@ export const asyncRoutes = [
     ]
   },
   {
+    path: '/components',
+    component: Layout,
+    name: 'Components',
+    redirect: '/components/slide-yz',
+    meta: { icon: 'el-icon-coin', title: '试卷' },
+    children: [
+      {
+        path: 'slide-yz',
+        name: 'Sldie-yz',
+        component: () => import('@/views/paper/paper-view'),
+        meta: { icon: 'el-icon-s-claim', title: '试题' }
+      },
+      {
+        path: 'carousel',
+        name: 'Carousel',
+        component: () => import('@/views/paper/paper-view'),
+        meta: { icon: 'el-icon-lunbo iconfont', title: '答案' }
+      }
+    ]
+  },
+  {
     path: '/echarts',
     component: Layout,
     name: 'Echarts',
