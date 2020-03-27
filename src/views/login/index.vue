@@ -19,11 +19,11 @@
       </transition>
     </div>
     <div class="loginBox">
-      <h2 class="loginH2"><strong>Vue</strong> 后台管理系统</h2>
+      <h2 class="loginH2">教学文件共享平台</h2>
       <div class="loginCon">
         <div class="titleDiv">
-          <h3>Sign up now</h3>
-          <p>Enter your username and password to log on:</p>
+          <h3>登录</h3>
+          <p>享受教学资源共享服务</p>
           <i class="el-icon-key"></i>
         </div>
         <el-form ref="loginForm" :rules="rules" :model="ruleForm">
@@ -54,6 +54,9 @@
             @click="register()">
             注册</el-button>
         </el-form>
+        <div class="visitDiv">
+          <p>该网站已累计被访问{{visitCount}}次</p>
+        </div>
       </div>
     </div>
   </div>
@@ -61,6 +64,8 @@
 
 <script>
 import SlideVerify from '@/components/SlideVerify'
+import API from '@/api'
+
 export default {
   data() {
     return {
@@ -77,12 +82,20 @@ export default {
           { min: 3, max: 15, message: '长度在3到5个字符', trigger: 'blur' }
         ],
         password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
-      }
+      },
+      visitCount: 6872
     }
   },
   mounted() {
+    this.getVisitCount()
   },
   methods: {
+    async getVisitCount() {
+      let response = await API.user.getVisitCount();
+      if (response.status === 200) {
+        this.visitCount = response.data
+      }
+    },
     onSuccess() {
       this.showSlide = false
       this._login()
@@ -184,6 +197,16 @@ export default {
     padding: 25px 25px 30px 25px;
     background: #eee;
     border-radius: 0 0 4px 4px;
+  }
+
+  .visitDiv {
+    padding: 8px 28px;
+    background: #fff;
+    position: relative;
+    height: 20px;
+    text-align: center;
+    color: #888;
+    border-radius:  0 0 4px 4px;
   }
 }
 .loginBtn {

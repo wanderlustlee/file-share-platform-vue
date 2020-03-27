@@ -14,6 +14,11 @@ export default {
   validateUserName(params) {
     const url = '/user/validate'
     return $axios.get(url, params)
+  },
+
+  getVisitCount() {
+    const url = '/user/visit-count'
+    return $axios.get(url)
   }
 
 }

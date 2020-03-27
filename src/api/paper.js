@@ -13,6 +13,10 @@ export default {
     const url = '/paper/question/list'
     return $axios.get(url, data)
   },
+  getPaperAnswerList(data) {
+    const url = '/paper/answer/list'
+    return $axios.get(url, data)
+  },
   queryByFileName(data) {
     const url = '/file/query'
     return $axios.get(url, data)
