@@ -141,47 +141,6 @@ export default {
     handlePage(val) {
       this.pageIndex = val
       this.getFileData()
-    },
-
-    // 取消
-    toDelete(row) {
-      row.status = 3
-      this.$notify({
-        title: '成功',
-        message: '已取消该订单',
-        type: 'success'
-      })
-    },
-    changeTab(form, type) {
-      this.$refs[form].validate(valid => {
-        if (valid) {
-          if (type === 'update') {
-            // 改变整个表格数据
-            let start = (this.currentPage - 1) * this.pageSize
-            this.allList[start + this.rowIndex] = Object.assign(
-              {},
-              this.formData
-            )
-            // 解决数组不能通过索引响应数据变化
-            this.$set(
-              this.tableData,
-              this.rowIndex,
-              Object.assign({}, this.formData)
-            )
-            this.$notify({
-              title: '成功',
-              message: '订单已修改成功',
-              type: 'success'
-            })
-          } else {
-            this.tableData.unshift(Object.assign({}, this.formData))
-            this.allList.push(Object.assign({}, this.formData))
-          }
-          this.diaIsShow = false
-        } else {
-          return
-        }
-      })
     }
   }
 }
