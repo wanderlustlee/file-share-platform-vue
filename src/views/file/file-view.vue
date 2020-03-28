@@ -7,7 +7,7 @@
       <div class="searchDiv">
         <el-input
           type="text"
-          placeholder="请输入文件名"
+          placeholder="请输入文件名（支持模糊查询）"
           class="width1"
           v-model="searchFileName"
         ></el-input>

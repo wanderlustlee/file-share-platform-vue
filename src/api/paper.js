@@ -17,8 +17,12 @@ export default {
     const url = '/paper/answer/list'
     return $axios.get(url, data)
   },
-  queryByFileName(data) {
-    const url = '/file/query'
+  queryQuestionByPaperName(data) {
+    const url = '/paper/question/query'
+    return $axios.get(url, data)
+  },
+  queryAnswerByPaperName(data) {
+    const url = '/paper/answer/query'
     return $axios.get(url, data)
   }
 }

@@ -133,7 +133,7 @@ export const asyncRoutes = [
       {
         path: 'carousel',
         name: 'Carousel',
-        component: () => import('@/views/paper/paper-view'),
+        component: () => import('@/views/paper/paper-answer-view'),
         meta: { icon: 'el-icon-lunbo iconfont', title: '答案' }
       }
     ]

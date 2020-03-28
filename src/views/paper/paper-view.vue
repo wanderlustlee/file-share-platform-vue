@@ -7,18 +7,10 @@
       <div class="searchDiv">
         <el-input
           type="text"
-          placeholder="请输入用户名"
+          placeholder="请输入试卷文件名（支持模糊查询）"
           class="width1"
-          v-model="searchUsername"
+          v-model="searchPaperName"
         ></el-input>
-
-        <el-date-picker
-          class="width1"
-          v-model="searchDate"
-          type="date"
-          placeholder="选择日期时间"
-          value-format="yyyy-MM-dd"
-        ></el-date-picker>
 
         <el-button type="primary" icon="el-icon-search" @click="search">搜索</el-button>
       </div>
@@ -66,7 +58,7 @@ export default {
     return {
       tableData: [],
       allList: [],
-      searchUsername: '',
+      searchPaperName: '',
       searchDate: '',
       pageSize: 10,
       pageIndex: 1,
@@ -94,14 +86,14 @@ export default {
     },
 
     async search() {
-      if (this.searchDescription) {
-        let response = await API.question.queryChoiceQuestionByDescription({ description: this.searchDescription });
+      if (this.searchPaperName) {
+        let response = await API.paper.queryQuestionByPaperName({ paperName: this.searchPaperName });
         if (response.status === 200) {
-          this.tableData = response.data.choiceQuestionVoList
+          this.tableData = response.data.paperVoList
           this.total = response.data.count
         }
       } else {
-        this.getAllChoiceQuestionData()
+        this.getAllPaperQuestion()
       }
     },
 
