@@ -139,33 +139,6 @@ export const asyncRoutes = [
     ]
   },
   {
-    path: '/echarts',
-    component: Layout,
-    name: 'Echarts',
-    redirect: '/echarts/slide-chart',
-    meta: { icon: 'el-icon-s-marketing', title: 'Echarts' },
-    children: [
-      {
-        path: 'slide-chart',
-        name: 'Sldie-chart',
-        component: () => import('@/views/echarts/slide-chart'),
-        meta: { title: '滑动charts' }
-      },
-      {
-        path: 'dynamic-chart',
-        name: 'Dynamic-chart',
-        component: () => import('@/views/echarts/dynamic-chart'),
-        meta: { title: '切换charts' }
-      },
-      {
-        path: 'map-chart',
-        name: 'Map-chart',
-        component: () => import('@/views/echarts/map-chart'),
-        meta: { title: 'map' }
-      }
-    ]
-  },
-  {
     path: '*',
     name: '*404',
     redirect: '/404',
