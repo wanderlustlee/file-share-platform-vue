@@ -90,6 +90,9 @@ export default {
   mounted() {
     this.getFileData()
   },
+  activated() {
+    this.getFileData()
+  },
   methods: {
     async getFileData() {
       let params = {

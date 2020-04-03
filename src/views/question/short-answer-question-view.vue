@@ -141,6 +141,10 @@ export default {
   mounted() {
     this.getAllShortAnswerQuestionData()
   },
+  // 路由切换时更新
+  activated() {
+    this.getAllShortAnswerQuestionData()
+  },
   methods: {
     async getAllShortAnswerQuestionData() {
       let params = {
@@ -181,9 +185,9 @@ export default {
       })
       let response = await API.question.addShortAnswerQuestion({shortAnswerQuestionData: JSON.stringify(this.shortAnswerQuestionData)})
       if (response.status === 200) {
+        this.diaIsShow = false
         this.$message.success('添加成功')
         this.getAllChoiceQuestionData()
-        this.diaIsShow = false
       } else {
         this.$message.error(response.msg)
       }
@@ -212,6 +216,7 @@ export default {
       }
       let response = await API.question.generate(params);
       if (response.status === 200) {
+        this.generateIsShow = false
         this.$message.success("试题及答案生成成功，请前往试题列表页查看")
       } else {
         this.$message.error(response.msg)
@@ -223,11 +228,11 @@ export default {
     },
     handleSize(val) {
       this.pageSize = val
-      this.getFileData()
+      this.getAllShortAnswerQuestionData()
     },
     handlePage(val) {
       this.pageIndex = val
-      this.getFileData()
+      this.getAllShortAnswerQuestionData()
     },
 
     // add

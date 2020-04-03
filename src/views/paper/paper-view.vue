@@ -72,6 +72,10 @@ export default {
   mounted() {
     this.getAllPaperQuestion()
   },
+  // 路由切换时更新
+  activated() {
+    this.getAllPaperQuestion()
+  },
   methods: {
     async getAllPaperQuestion() {
       let params = {

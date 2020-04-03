@@ -72,6 +72,10 @@ export default {
   mounted() {
     this.getAllPaperAnswer()
   },
+  // 路由切换时更新
+  activated() {
+    this.getAllPaperAnswer()
+  },
   methods: {
     async getAllPaperAnswer() {
       let params = {
@@ -122,11 +126,11 @@ export default {
     },
     handleSize(val) {
       this.pageSize = val
-      this.getAllPaperQuestion()
+      this.getAllPaperAnswer()
     },
     handlePage(val) {
       this.pageIndex = val
-      this.getAllPaperQuestion()
+      this.getAllPaperAnswer()
     }
   }
 }

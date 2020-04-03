@@ -59,7 +59,7 @@
       </el-pagination>
     </el-card>
 
-    <el-dialog :title="dialogTitle" :visible="diaIsShow" class="diaForm">
+    <el-dialog :title="dialogTitle" :visible.sync="diaIsShow" class="diaForm">
       <el-form
           ref="diaForm"
           :model="choiceQuestionData"
@@ -186,6 +186,10 @@ export default {
   mounted() {
     this.getAllChoiceQuestionData()
   },
+  // 路由切换时更新
+  activated() {
+    this.getAllChoiceQuestionData()
+  },
   methods: {
     async getAllChoiceQuestionData() {
       let params = {
@@ -270,11 +274,11 @@ export default {
     },
     handleSize(val) {
       this.pageSize = val
-      this.getFileData()
+      this.getAllChoiceQuestionData()
     },
     handlePage(val) {
       this.pageIndex = val
-      this.getFileData()
+      this.getAllChoiceQuestionData()
     },
 
     // add
