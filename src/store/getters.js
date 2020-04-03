@@ -1,6 +1,6 @@
 const getters = {
   token: state => state.user.token,
-  userName: state => state.user.userName,
+  userName: state => state.user.userName || localStorage.getItem('userName'),
   roles: state => state.user.roles,
   introduce: state => state.user.introduce,
   routes: state => state.permission.routes,

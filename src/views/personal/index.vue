@@ -21,19 +21,24 @@
       </div>
     </div>
     <el-tabs>
-      <el-tab-pane label="Timeline">
+      <el-tab-pane label="文件操作记录">
         <!-- <el-button type="primary" slot="label">Timeline</el-button> -->
         <el-timeline :data="userLoadHistory">
-          <el-timeline-item v-for="(load, index) in userLoadHistory" :key="index" :timestamp="load.createTime" placement="top">
+          <el-timeline-item v-for="(load, index) in fileHistory" :key="index" :timestamp="load.createTime" placement="top">
             <el-card>
               <h4> {{load.operateType == 'upload' ? '上传' : '下载'}}了 {{load.fileName}}</h4>
             </el-card>
           </el-timeline-item>
         </el-timeline>
       </el-tab-pane>
-      <el-tab-pane label="Message">
-        <!-- <el-button type="success" slot="label">Message</el-button> -->
-        Message
+      <el-tab-pane label="试题操作记录">
+        <el-timeline :data="userLoadHistory">
+          <el-timeline-item v-for="(load, index) in paperHistory" :key="index" :timestamp="load.createTime" placement="top">
+            <el-card>
+              <h4> 生成了 {{load.paperName}}</h4>
+            </el-card>
+          </el-timeline-item>
+        </el-timeline>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -46,7 +51,8 @@ import API from '@/api'
 export default {
   data() {
     return {
-      userLoadHistory: [],
+      fileHistory: [],
+      paperHistory: []
     }
   },
   computed: {
@@ -59,7 +65,8 @@ export default {
     async getUserLoadData() {
       let response = await API.user.getUserLoad()
       if (response.status === 200) {
-        this.userLoadHistory = response.data
+        this.fileHistory = response.data.fileVoList
+        this.paperHistory = response.data.paperVoList
       }
     }
   }

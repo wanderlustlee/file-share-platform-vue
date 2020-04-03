@@ -25,6 +25,7 @@ const mutations = {
   },
   SET_NAME(state, payload) {
     state.userName = payload
+    localStorage.setItem('userName', payload)
   },
   SET_INTRODUCE(state, payload) {
     state.introduce = payload
