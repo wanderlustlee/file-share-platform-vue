@@ -19,6 +19,12 @@ export default {
   getVisitCount() {
     const url = '/user/visit-count'
     return $axios.get(url)
+  },
+
+  getRemindList() {
+    const url = '/user/remind'
+    return $axios.get(url)
   }
+
 
 }

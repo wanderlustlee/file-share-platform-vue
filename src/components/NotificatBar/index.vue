@@ -9,10 +9,10 @@
         ></i>
       </div>
       <ul class="conUl">
-        <li v-for="item in msgList" :key="item.id">
+        <li v-for="item in msgList" :key="item">
           <router-link :to="item.link" class="conUl_link">
-            <span class="conUl_sp0">{{ item.content }}</span>
-            <span class="conUl_sp1">{{ item.time }}</span>
+            <span class="conUl_sp0">{{ item }}</span>
+<!--            <span class="conUl_sp1">{{ item.time }}</span>-->
           </router-link>
         </li>
       </ul>
@@ -21,35 +21,25 @@
 </template>
 
 <script>
+  import API from '@/api'
 export default {
   data() {
     return {
-      msgList: [
-        {
-          id: '1',
-          content: '优惠券到期提醒',
-          link: '',
-          time: '2019-06-01'
-        },
-        {
-          id: '2',
-          content: '618大促，请查看活动具体信息',
-          link: '',
-          time: '2019-06-02'
-        },
-        {
-          id: '3',
-          content: '充值成功',
-          link: '',
-          time: '2019-07-02'
-        },
-        {
-          id: '4',
-          content: '密码充值成功！',
-          link: '',
-          time: '2019-07-02'
-        }
-      ]
+      msgList: []
+    }
+  },
+  mounted() {
+    this.getMsgList()
+  },
+  activated() {
+    this.getMsgList()
+  },
+  methods: {
+    async getMsgList() {
+      let response = await API.user.getRemindList()
+      if (response.status === 200) {
+        this.msgList = response.data
+      }
     }
   }
 }
