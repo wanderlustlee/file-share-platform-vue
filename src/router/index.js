@@ -73,9 +73,9 @@ export const currencyRoutes = [
 /*动态添加routers*/
 export const asyncRoutes = [
   {
-    path: '/table',
-    name: 'Table',
-    redirect: '/table/complex-table',
+    path: '/file',
+    name: 'File',
+    redirect: '/file/file-view',
     component: Layout,
     meta: {
       title: '文件',
@@ -83,56 +83,56 @@ export const asyncRoutes = [
     },
     children: [
       {
-        path: 'complex-table',
-        name: 'ComplexTable',
+        path: 'file-view',
+        name: 'FileView',
         component: () => import('@/views/file/file-view'),
         meta: { title: '查看文件' }
       },
       {
-        path: 'excel-in',
-        name: 'Excel-in',
+        path: 'file-upload',
+        name: 'FileUpload',
         component: () => import('@/views/file/file-upload'),
         meta: { title: '上传文件' }
       }
     ]
   },
   {
-    path: '/excel',
+    path: '/question',
     component: Layout,
-    name: 'Excel',
-    redirect: '/excel-operate/excel-out',
+    name: 'Question',
+    redirect: '/question/choice-question-view',
     meta: { icon: 'el-icon-excel iconfont', title: '试题' },
     children: [
       {
-        path: 'excel-out',
-        name: 'Excel-out',
+        path: 'choice-question-view',
+        name: 'choice-question-view',
         component: () => import('@/views/question/choice-question-view'),
         meta: { title: '单选题' }
       },
       {
-        path: 'mutiheader-out',
-        name: 'Mutiheader-out',
+        path: 'short-answer-question-view',
+        name: 'short-answer-question-view',
         component: () => import('@/views/question/short-answer-question-view'),
         meta: { title: '简答题' }
       }
     ]
   },
   {
-    path: '/components',
+    path: '/paper',
     component: Layout,
-    name: 'Components',
-    redirect: '/components/slide-yz',
+    name: 'paper',
+    redirect: '/paper/paper-view',
     meta: { icon: 'el-icon-coin', title: '试卷' },
     children: [
       {
-        path: 'slide-yz',
-        name: 'Sldie-yz',
+        path: 'paper-view',
+        name: 'paper-view',
         component: () => import('@/views/paper/paper-view'),
         meta: { icon: 'el-icon-s-claim', title: '试题' }
       },
       {
-        path: 'carousel',
-        name: 'Carousel',
+        path: 'paper-answer-view',
+        name: 'paper-answer-view',
         component: () => import('@/views/paper/paper-answer-view'),
         meta: { icon: 'el-icon-lunbo iconfont', title: '答案' }
       }

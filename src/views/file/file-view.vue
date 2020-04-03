@@ -41,12 +41,6 @@
               @click="preview(scope.row.fileName)"
               >预览</el-button
             >
-            <el-button
-              type="danger"
-              @click="toDelete(scope.row.fileName)"
-              :disabled="scope.row.status !== 3 ? false : true"
-              >取消</el-button
-            >
           </template>
         </el-table-column>
       </el-table>

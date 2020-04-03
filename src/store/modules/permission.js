@@ -28,11 +28,14 @@ const actions = {
   getAsyncRoutes({ commit, rootGetters }, roles) {
     return new Promise(resolve => {
       let routes = []
-      if (rootGetters.userName === 'admin') {
-        routes = asyncRoutes || ''
-      } else {
-        routes = forSearchArr(asyncRoutes, roles)
-      }
+      // 根据用户权限赋予不同的路由
+      // if (rootGetters.userName === 'admin') {
+      //   routes = asyncRoutes || ''
+      // } else {
+      //   routes = forSearchArr(asyncRoutes, roles)
+      // }
+      // 取消权限
+      routes = asyncRoutes || ''
       commit('SET_ROUTES', routes)
       resolve(routes)
     })
