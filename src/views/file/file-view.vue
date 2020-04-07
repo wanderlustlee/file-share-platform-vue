@@ -113,7 +113,7 @@ export default {
     },
     preview(fileName) {
       let kkPreviewUrl = 'http://127.0.0.1:8012/onlinePreview?url='
-      let previewUrl = 'http://10.12.65.93:8888/file/preview/' + fileName + '?type=file'
+      let previewUrl = 'http://10.12.65.216:8888/file/preview/' + fileName + '?type=file'
       window.open(kkPreviewUrl + encodeURIComponent(previewUrl));
 
     },

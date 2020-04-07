@@ -93,6 +93,12 @@ export const asyncRoutes = [
         name: 'FileUpload',
         component: () => import('@/views/file/file-upload'),
         meta: { title: '上传文件' }
+      },
+      {
+        path: 'file-verify',
+        name: 'FileVerify',
+        component: () => import('@/views/file/file-verify'),
+        meta: { title: '校验文件' }
       }
     ]
   },
