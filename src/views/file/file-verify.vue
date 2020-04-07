@@ -2,7 +2,7 @@
   <div class="excelIn">
     <el-card>
       <div slot="header">
-        <span>上传文件</span>
+        <span>校验文件</span>
       </div>
       <el-upload
           class="upload-demo"
