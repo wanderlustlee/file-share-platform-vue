@@ -14,7 +14,7 @@
           >
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-        <div class="el-upload__tip" slot="tip">不可超过10M</div>
+        <div class="el-upload__tip" slot="tip">不可超过100M</div>
       </el-upload>
     </el-card>
 
@@ -38,8 +38,8 @@ export default {
     // 上传同名文件会覆盖
     upload(file) {
       let size = file.size / 1024 / 1024
-      if (size > 10) {
-        this.$message.error('图片大小不能超过10MB!')
+      if (size > 100) {
+        this.$message.error('大小不能超过100MB!')
         return false
       }
       this.formData = new FormData();
@@ -63,4 +63,8 @@ export default {
   },
 }
 </script>
-<style></style>
+<style>
+  .upload-demo {
+    text-align: center;
+  }
+</style>
