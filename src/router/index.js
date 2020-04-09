@@ -50,7 +50,7 @@ export const currencyRoutes = [
         path: 'dashbord',
         name: 'Dashbord',
         component: () => import('@/views/dashboard'),
-        meta: { title: '首页', icon: 'el-icon-s-data' }
+        meta: { title: '首页', icon: 'el-icon-help' }
       }
     ]
   },
@@ -79,7 +79,7 @@ export const asyncRoutes = [
     component: Layout,
     meta: {
       title: '文件',
-      icon: 'el-icon-table iconfont'
+      icon: 'el-icon-folder-opened'
     },
     children: [
       {
@@ -107,7 +107,7 @@ export const asyncRoutes = [
     component: Layout,
     name: 'Question',
     redirect: '/question/choice-question-view',
-    meta: { icon: 'el-icon-excel iconfont', title: '试题' },
+    meta: { icon: 'el-icon-edit', title: '试题' },
     children: [
       {
         path: 'choice-question-view',
@@ -128,7 +128,7 @@ export const asyncRoutes = [
     component: Layout,
     name: 'paper',
     redirect: '/paper/paper-view',
-    meta: { icon: 'el-icon-coin', title: '试卷' },
+    meta: { icon: 'el-icon-document', title: '试卷' },
     children: [
       {
         path: 'paper-view',
