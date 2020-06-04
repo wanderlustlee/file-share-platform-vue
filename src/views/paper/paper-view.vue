@@ -116,7 +116,7 @@ export default {
     // 需要用公网ip，实时修改
     preview(fileName) {
       let kkPreviewUrl = 'http://127.0.0.1:8012/onlinePreview?url='
-      let previewUrl = 'http://10.12.65.93:8888/file/preview/' + fileName + '?type=paper'
+      let previewUrl = 'http://172.29.238.1:8888/file/preview/' + fileName + '?type=paper'
       window.open(kkPreviewUrl + encodeURIComponent(previewUrl));
 
     },
