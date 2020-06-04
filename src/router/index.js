@@ -169,6 +169,7 @@ export function resetRouter() {
 }
 
 // 导航守卫
+// 校验登录状态，如果没有token，跳转到登录页
 router.beforeEach(async (to, from, next) => {
   document.title = getTitle(to.meta.title)
   if (to.path === '/login') {
